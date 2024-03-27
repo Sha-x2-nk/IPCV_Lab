@@ -1,0 +1,10 @@
+# Ignore compiled binaries
+
+# Ignore build directories
+**/build/
+**/dist/
+imgs/
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
