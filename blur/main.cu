@@ -19,14 +19,14 @@ __global__ void blurKernel(unsigned char* img_in, unsigned char* img_out, int im
     int row= threadIdx.y + blockDim.y * blockIdx.y;
     int col= threadIdx.x + blockDim.x * blockIdx.x;
 
-    if(row< img_height and col< img_width){
+    if(row< img_height && col< img_width){
         int pix_val[3]={0};
         int pix_num= 0;
         for(int rowShift= -BLUR_SIZE; rowShift<= BLUR_SIZE; ++rowShift){
             for(int colShift= -BLUR_SIZE; colShift<= BLUR_SIZE; ++colShift){
                 int curRow= row + rowShift; 
                 int curCol= col + colShift;
-                if(curRow< img_height and curCol< img_width){
+                if(curRow< img_height && curCol< img_width){
                     int curIdx= (img_width*curRow + curCol)*3;
                     for(int ch= 0; ch< 3; ++ch){
                         pix_val[ch]+= img_in[curIdx + ch];

@@ -309,7 +309,7 @@ int main(int argc, char* args[])
                     int fps = cap.get(cv::CAP_PROP_FPS);
                     const int TOTAL_FRAMES = cap.get(cv::CAP_PROP_FRAME_COUNT);
                     const int FRAME_INTERVAL = TOTAL_FRAMES / 25; // 25 frames per video
-                    std::cout << "\n VID FPS: " << fps << ". TOTAL FRAMES: " << TOTAL_FRAMES;
+                    std::cout << "\n VID FPS: " << fps << ". TOTAL FRAMES: " << TOTAL_FRAMES<<". FRAME INTERVAL: "<<FRAME_INTERVAL;
                     std::string vidNum;
                     char a = vid_path[vid_path.size() - 5];
                     if (a == '1') vidNum = std::to_string(1);
@@ -352,8 +352,8 @@ int main(int argc, char* args[])
 
                     cv::Mat frame;
                     std::cout << "\n[..] STARTING ON " << vid_path;
-                    for (int i = 1; i <= TOTAL_FRAMES && cap.read(frame); ++i) {
-                        if( (i - 1) % FRAME_INTERVAL != 0) continue;
+                    for (int i = 1; i <= FRAME_INTERVAL * 25 && cap.read(frame); ++i) {
+                        if( i % FRAME_INTERVAL != 0 ) continue;
                         std::ostringstream oss;
                         oss << std::setw(3) << std::setfill('0') << i; // Set width to 3 and fill with '0'
                         std::string txt_filename = folder_name + "/" + "output/v" + vidNum + "/" + regNo + "_v" + vidNum + "_f" + oss.str() + ".txt";
@@ -389,7 +389,11 @@ int main(int argc, char* args[])
                         std::string file_data = regNo + " " + std::to_string(x_norm) + " " + std::to_string(y_norm) + " " + std::to_string(width_norm) + " " + std::to_string(height_norm);
                         file << file_data << std::endl;
 
-
+                        // to show cropped faces
+                        frame = frame(boxes[0]);
+                        cv::imshow("img", frame);
+                        cv::waitKey(10);
+                        
                         // Close the file
                         file.close();
                         cv::imwrite(jpg_filename, frame);
